@@ -1,0 +1,82 @@
+<html>
+
+<head>
+    <title>Sprite for Javascript Games</title>
+    <script type="module">
+        import { Sprite } from './Sprite.js'
+
+        const canvas = document.getElementById('mainCanvas');
+        const context = canvas.getContext('2d');
+
+        const sprite = new Sprite({
+            context: context,
+            spriteSrc: './assets/Green-Cap-Character-16x18.png',
+            x: 0,
+            y: 0,
+            width: 16,
+            height: 18,
+            pixelSize: 3,
+            assetsFrame: { x: 3, y: 4 }, //assets have 3 sprites in 4 row
+            moveOptions: { interval: 10, factor: 1 },
+            animateOptions: { steps: 150 }
+        });
+
+
+        let line = 1;
+        window.setInterval(function () {
+            let keyframe = [1, 2];
+            if (line == 2 || line == 3) {
+                keyframe = [1, 0, 2, 0];
+            }
+
+            sprite.clear();
+            sprite.startAnimate({
+                lineNumber: line,
+                //steps: 250, //in ms for each frame,
+                //steps: [200, 400], //in ms for frame
+                startRow: 0,
+                keyFrame: keyframe,
+            });
+            line = line + 1;
+            if (line > 3) {
+                line = 0;
+            }
+        }, 4000);
+
+
+        sprite.startAnimate({
+            lineNumber: 0,
+            //steps: 250, //in ms for each frame,
+            //steps: [200, 400], //in ms for frame
+            startRow: 0,
+            keyFrame: [1, 2],
+        });
+
+    </script>
+    <style>
+        .LayerContainer {
+            position: relative;
+        }
+
+        .LayerContainer>canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border: 1px solid #000000;
+            image-rendering: optimizeSpeed;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: -o-crisp-edges;
+            image-rendering: pixelated;
+            -ms-interpolation-mode: nearest-neighbor;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="LayerContainer">
+        <canvas id="mainCanvas" width="800" height="600"></canvas>
+    </div>
+</body>
+
+</html>
